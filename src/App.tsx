@@ -1,26 +1,20 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import ChannelForm from "./components/ChannelForm";
+import VideoCall from "./components/VideoCall";
 
-function App() {
+const App = () => {
+  const [inCall, setInCall] = useState(false);
+  const [channelName, setChannelName] = useState("");
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1 className="heading">Agora RTC NG SDK React Wrapper</h1>
+      {inCall ? (
+        <VideoCall setInCall={setInCall} channelName={channelName} />
+      ) : (
+        <ChannelForm setInCall={setInCall} setChannelName={setChannelName} />
+      )}
     </div>
   );
-}
+};
 
 export default App;
