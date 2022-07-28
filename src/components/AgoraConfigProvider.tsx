@@ -8,7 +8,7 @@ import {
  */
 const appId = "c7f382d8d1264ab997f69189dac8eb91";
 const config: ClientConfig = {
-  mode: "rtc",
+  mode: "live",
   codec: "vp8",
 };
 const initialValues = {

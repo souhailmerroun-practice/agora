@@ -3,10 +3,10 @@ import { AgoraConfigContext } from "./AgoraConfigProvider";
 
 const ChannelForm = (props: {
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
-  setChannelName: React.Dispatch<React.SetStateAction<string>>;
+  setRole: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const { appId } = useContext(AgoraConfigContext);
-  const { setInCall, setChannelName } = props;
+  const { setInCall, setRole } = props;
 
   return (
     <form className="join">
@@ -18,15 +18,25 @@ const ChannelForm = (props: {
       <input
         type="text"
         placeholder="Enter Channel Name"
-        onChange={(e) => setChannelName(e.target.value)}
+        //onChange={(e) => setChannelName(e.target.value)}
       />
       <button
         onClick={(e) => {
           e.preventDefault();
           setInCall(true);
+          setRole("host");
         }}
       >
-        Join
+        Join as host
+      </button>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          setInCall(true);
+          setRole("audience");
+        }}
+      >
+        Join as audience
       </button>
     </form>
   );

@@ -3,16 +3,10 @@ import { useContext, useState } from "react";
 import { AgoraClientContext } from "./AgoraClientProvider";
 import { AgoraConfigContext } from "./AgoraConfigProvider";
 
-export const Controls = (props: {
+export const TracksControls = (props: {
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
-  setStart: React.Dispatch<React.SetStateAction<boolean>>;
-  setInCall: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { appId } = useContext(AgoraConfigContext);
-
-  const { client, useMicrophoneAndCameraTracks } = useContext(AgoraClientContext);
-
-  const { tracks, setStart, setInCall } = props;
+  const { tracks } = props;
   const [trackState, setTrackState] = useState({ video: true, audio: true });
 
   const mute = async (type: "audio" | "video") => {
@@ -29,27 +23,16 @@ export const Controls = (props: {
     }
   };
 
-  const leaveChannel = async () => {
-    await client.leave();
-    client.removeAllListeners();
-    // we close the tracks to perform cleanup
-    tracks[0].close();
-    tracks[1].close();
-    setStart(false);
-    setInCall(false);
-  };
-
   return (
-    <div className="controls">
-      <p className={trackState.audio ? "on" : ""} onClick={() => mute("audio")}>
+    <>
+      <button className={trackState.audio ? "on" : ""} onClick={() => mute("audio")}>
         {trackState.audio ? "MuteAudio" : "UnmuteAudio"}
-      </p>
-      <p className={trackState.video ? "on" : ""} onClick={() => mute("video")}>
+      </button>
+      <button className={trackState.video ? "on" : ""} onClick={() => mute("video")}>
         {trackState.video ? "MuteVideo" : "UnmuteVideo"}
-      </p>
-      {<p onClick={() => leaveChannel()}>Leave</p>}
-    </div>
+      </button>
+    </>
   );
 };
 
-export default Controls;
+export default TracksControls;
