@@ -1,13 +1,15 @@
 import { IMicrophoneAudioTrack, ICameraVideoTrack, IAgoraRTCClient } from "agora-rtc-react";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import { AgoraContext } from "./App";
 
 export const Controls = (props: {
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
   setStart: React.Dispatch<React.SetStateAction<boolean>>;
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
-  useClient: () => IAgoraRTCClient;
 }) => {
-  const { tracks, setStart, setInCall, useClient } = props;
+  const { useClient } = useContext(AgoraContext);
+
+  const { tracks, setStart, setInCall } = props;
   const client = useClient();
   const [trackState, setTrackState] = useState({ video: true, audio: true });
 

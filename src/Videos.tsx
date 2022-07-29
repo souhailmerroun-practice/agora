@@ -4,12 +4,13 @@ import {
   ICameraVideoTrack,
   AgoraVideoPlayer,
 } from "agora-rtc-react";
-import React from "react";
+import React, { useContext } from "react";
+import { AgoraContext } from "./App";
 
 const Videos = (props: {
   users: IAgoraRTCRemoteUser[];
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
-}) => {
+}) => {  
   const { users, tracks } = props;
 
   return (

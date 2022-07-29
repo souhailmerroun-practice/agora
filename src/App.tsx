@@ -25,29 +25,34 @@ const token: string | null = null;
 const useClient = createClient(config);
 const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
 
+export const AgoraContext = React.createContext({
+  appId: appId,
+  token: token,
+  useClient: useClient,
+  useMicrophoneAndCameraTracks: useMicrophoneAndCameraTracks,
+});
+
 const App = () => {
   const [inCall, setInCall] = useState(false);
   const [channelName, setChannelName] = useState("");
   return (
-    <div>
-      <h1 className="heading">Agora RTC NG SDK React Wrapper</h1>
-      {inCall ? (
-        <VideoCall
-          setInCall={setInCall}
-          channelName={channelName}
-          useClient={useClient}
-          useMicrophoneAndCameraTracks={useMicrophoneAndCameraTracks}
-          appId={appId}
-          token={token}
-        />
-      ) : (
-        <ChannelForm
-          setInCall={setInCall}
-          setChannelName={setChannelName}
-          appId={appId}
-        />
-      )}
-    </div>
+    <AgoraContext.Provider
+      value={{
+        appId: appId,
+        token: token,
+        useClient: useClient,
+        useMicrophoneAndCameraTracks: useMicrophoneAndCameraTracks,
+      }}
+    >
+      <div>
+        <h1 className="heading">Agora RTC NG SDK React Wrapper</h1>
+        {inCall ? (
+          <VideoCall setInCall={setInCall} channelName={channelName} />
+        ) : (
+          <ChannelForm setInCall={setInCall} setChannelName={setChannelName} />
+        )}
+      </div>
+    </AgoraContext.Provider>
   );
 };
 

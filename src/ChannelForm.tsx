@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AgoraContext } from "./App";
 
 const ChannelForm = (props: {
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
   setChannelName: React.Dispatch<React.SetStateAction<string>>;
-  appId: string;
 }) => {
-  const { setInCall, setChannelName, appId } = props;
+  const { appId } = useContext(AgoraContext);
+
+  const { setInCall, setChannelName } = props;
 
   return (
     <form className="join">

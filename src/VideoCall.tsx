@@ -5,23 +5,18 @@ import {
   ICameraVideoTrack,
   IMicrophoneAudioTrack,
 } from "agora-rtc-react";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AgoraContext } from "./App";
 import Controls from "./Controls";
 import Videos from "./Videos";
 
 const VideoCall = (props: {
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
   channelName: string;
-  useClient: () => IAgoraRTCClient;
-  useMicrophoneAndCameraTracks: () => {
-    ready: boolean;
-    tracks: [IMicrophoneAudioTrack, ICameraVideoTrack] | null;
-    error: AgoraRTCError | null;
-  };
-  appId: string;
-  token: string | null;
 }) => {
-  const { setInCall, channelName, useClient, useMicrophoneAndCameraTracks, appId, token } =
+  const { useClient, useMicrophoneAndCameraTracks, appId, token } = useContext(AgoraContext);
+  
+  const { setInCall, channelName } =
     props;
   const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
   const [start, setStart] = useState<boolean>(false);
@@ -83,7 +78,6 @@ const VideoCall = (props: {
           tracks={tracks}
           setStart={setStart}
           setInCall={setInCall}
-          useClient={useClient}
         />
       )}
       {start && tracks && <Videos users={users} tracks={tracks} />}
