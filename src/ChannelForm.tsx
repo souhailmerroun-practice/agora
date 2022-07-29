@@ -4,10 +4,11 @@ import { AgoraContext } from "./App";
 const ChannelForm = (props: {
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
   setChannelName: React.Dispatch<React.SetStateAction<string>>;
+  setRole: React.Dispatch<React.SetStateAction<string>>;
 }) => {
   const { appId } = useContext(AgoraContext);
 
-  const { setInCall, setChannelName } = props;
+  const { setInCall, setChannelName, setRole } = props;
 
   return (
     <form className="join">
@@ -25,9 +26,19 @@ const ChannelForm = (props: {
         onClick={(e) => {
           e.preventDefault();
           setInCall(true);
+          setRole("host");
         }}
       >
         Join
+      </button>
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          setInCall(true);
+          setRole("audience");
+        }}
+      >
+        Join as audience
       </button>
     </form>
   );

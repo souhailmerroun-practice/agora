@@ -1,4 +1,4 @@
-import { IMicrophoneAudioTrack, ICameraVideoTrack, IAgoraRTCClient } from "agora-rtc-react";
+import { IMicrophoneAudioTrack, ICameraVideoTrack } from "agora-rtc-react";
 import React, { useContext, useState } from "react";
 import { AgoraContext } from "./App";
 

@@ -4,8 +4,7 @@ import {
   ICameraVideoTrack,
   AgoraVideoPlayer,
 } from "agora-rtc-react";
-import React, { useContext } from "react";
-import { AgoraContext } from "./App";
+import React from "react";
 
 const Videos = (props: {
   users: IAgoraRTCRemoteUser[];

@@ -1,9 +1,5 @@
 import {
-  AgoraRTCError,
-  IAgoraRTCClient,
   IAgoraRTCRemoteUser,
-  ICameraVideoTrack,
-  IMicrophoneAudioTrack,
 } from "agora-rtc-react";
 import React, { useState, useEffect, useContext } from "react";
 import { AgoraContext } from "./App";
