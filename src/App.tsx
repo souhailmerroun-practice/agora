@@ -6,9 +6,10 @@ import {
 } from "agora-rtc-react";
 import VideoCall from "./VideoCall";
 import ChannelForm from "./ChannelForm";
+import VideoCallAudience from "./VideoCallAudience";
 
 const config: ClientConfig = {
-  mode: "rtc",
+  mode: "live",
   codec: "vp8",
 };
 
@@ -43,8 +44,12 @@ const App = () => {
     >
       <div>
         <h1 className="heading">Agora RTC NG SDK React Wrapper</h1>
-        {inCall && (
+        {inCall && role === "host" && (
           <VideoCall setInCall={setInCall} channelName={channelName} />
+        )}
+
+        {inCall && role === "audience" && (
+          <VideoCallAudience setInCall={setInCall} channelName={channelName} />
         )}
 
         {!inCall && (

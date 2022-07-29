@@ -1,16 +1,10 @@
 import { IMicrophoneAudioTrack, ICameraVideoTrack } from "agora-rtc-react";
-import React, { useContext, useState } from "react";
-import { AgoraContext } from "./App";
+import React, { useState } from "react";
 
-export const Controls = (props: {
+export const ControlsTracks = (props: {
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
-  setStart: React.Dispatch<React.SetStateAction<boolean>>;
-  setInCall: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { useClient } = useContext(AgoraContext);
-
-  const { tracks, setStart, setInCall } = props;
-  const client = useClient();
+  const { tracks } = props;
   const [trackState, setTrackState] = useState({ video: true, audio: true });
 
   const mute = async (type: "audio" | "video") => {
@@ -27,27 +21,16 @@ export const Controls = (props: {
     }
   };
 
-  const leaveChannel = async () => {
-    await client.leave();
-    client.removeAllListeners();
-    // we close the tracks to perform cleanup
-    tracks[0].close();
-    tracks[1].close();
-    setStart(false);
-    setInCall(false);
-  };
-
   return (
-    <div className="controls">
+    <>
       <p className={trackState.audio ? "on" : ""} onClick={() => mute("audio")}>
         {trackState.audio ? "MuteAudio" : "UnmuteAudio"}
       </p>
       <p className={trackState.video ? "on" : ""} onClick={() => mute("video")}>
         {trackState.video ? "MuteVideo" : "UnmuteVideo"}
       </p>
-      {<p onClick={() => leaveChannel()}>Leave</p>}
-    </div>
+    </>
   );
 };
 
-export default Controls;
+export default ControlsTracks;

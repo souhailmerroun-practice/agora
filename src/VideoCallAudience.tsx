@@ -2,14 +2,13 @@ import { IAgoraRTCRemoteUser } from "agora-rtc-react";
 import React, { useState, useEffect, useContext } from "react";
 import { AgoraContext } from "./App";
 import ControlsChannel from "./ControlsChannel";
-import ControlsTracks from "./ControlsTracks";
-import Videos from "./Videos";
+import VideosAudience from "./VideosAudience";
 
-const VideoCall = (props: {
+const VideoCallAudience = (props: {
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
   channelName: string;
 }) => {
-  const { useClient, useMicrophoneAndCameraTracks, appId, token } =
+  const { useClient, appId, token } =
     useContext(AgoraContext);
 
   const { setInCall, channelName } = props;
@@ -18,8 +17,7 @@ const VideoCall = (props: {
   // using the hook to get access to the client object
   const client = useClient();
   // ready is a state variable, which returns true when the local tracks are initialized, untill then tracks variable is null
-  const { ready, tracks } = useMicrophoneAndCameraTracks();
-
+  
   useEffect(() => {
     // function to initialise the SDK
     let init = async (name: string) => {
@@ -55,30 +53,25 @@ const VideoCall = (props: {
         });
       });
 
-      client.setClientRole("host");
+      client.setClientRole("audience");
 
       await client.join(appId, name, token, null);
-      if (tracks) await client.publish([tracks[0], tracks[1]]);
       setStart(true);
     };
 
-    if (ready && tracks) {
-      console.log("init ready");
-      init(channelName);
-    }
-  }, [channelName, client, ready, tracks]);
+    init(channelName);
+  }, [channelName, client]);
 
   return (
     <div className="App">
-      {ready && tracks && (
+      {start && (
         <div className="controls">
           <ControlsChannel setStart={setStart} setInCall={setInCall} />
-          <ControlsTracks tracks={tracks} />
         </div>
       )}
-      {start && tracks && <Videos users={users} tracks={tracks} />}
+      {start && <VideosAudience users={users} />}
     </div>
   );
 };
 
-export default VideoCall;
+export default VideoCallAudience;
