@@ -18,7 +18,7 @@ export const ControlsChannel = (props: {
     setInCall(false);
   };
 
-  return <>{<p onClick={() => leaveChannel()}>Leave</p>}</>;
+  return <>{<button onClick={() => leaveChannel()}>Leave</button>}</>;
 };
 
 export default ControlsChannel;

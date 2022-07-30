@@ -1,42 +1,32 @@
-import {
-  IAgoraRTCRemoteUser,
-  IMicrophoneAudioTrack,
-  ICameraVideoTrack,
-  AgoraVideoPlayer,
-} from "agora-rtc-react";
+import { IAgoraRTCRemoteUser, AgoraVideoPlayer } from "agora-rtc-react";
 import React from "react";
 
-const Videos = (props: {
-  users: IAgoraRTCRemoteUser[];
-  tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
-}) => {  
-  const { users, tracks } = props;
+const Videos = (props: { users: IAgoraRTCRemoteUser[] }) => {
+  const { users } = props;
 
   return (
-    <div>
-      <div id="videos">
-        {/* AgoraVideoPlayer component takes in the video track to render the stream,
-              you can pass in other props that get passed to the rendered div */}
-        <AgoraVideoPlayer
-          style={{ height: "30%", width: "30%" }}
-          className="vid"
-          videoTrack={tracks[1]}
-        />
-        {users.length > 0 &&
-          users.map((user) => {
-            if (user.videoTrack) {
-              return (
+    <>
+      <h2>Remote participants</h2>
+      {users.length > 0 &&
+        users.map((user) => {
+          if (user.videoTrack) {
+            return (
+              <div
+                style={{
+                  width: "150px",
+                  height: "150px"
+                }}
+              >
                 <AgoraVideoPlayer
-                  style={{ height: "95%", width: "95%" }}
-                  className="vid"
+                  style={{ height: "100%", width: "100%" }}
                   videoTrack={user.videoTrack}
                   key={user.uid}
                 />
-              );
-            } else return null;
-          })}
-      </div>
-    </div>
+              </div>
+            );
+          } else return null;
+        })}
+    </>
   );
 };
 

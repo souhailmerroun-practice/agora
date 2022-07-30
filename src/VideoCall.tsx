@@ -1,4 +1,4 @@
-import { IAgoraRTCRemoteUser } from "agora-rtc-react";
+import { AgoraVideoPlayer, IAgoraRTCRemoteUser } from "agora-rtc-react";
 import React, { useState, useEffect, useContext } from "react";
 import { AgoraContext } from "./App";
 import ControlsChannel from "./ControlsChannel";
@@ -56,7 +56,6 @@ const VideoCall = (props: {
       });
 
       client.setClientRole("host");
-
       await client.join(appId, name, token, null);
       if (tracks) await client.publish([tracks[0], tracks[1]]);
       setStart(true);
@@ -69,15 +68,25 @@ const VideoCall = (props: {
   }, [channelName, client, ready, tracks]);
 
   return (
-    <div className="App">
+    <>
       {ready && tracks && (
-        <div className="controls">
+        <>
+          <h2>My controls</h2>
           <ControlsChannel setStart={setStart} setInCall={setInCall} />
           <ControlsTracks tracks={tracks} />
-        </div>
+          <h2>My video</h2>
+          <div
+            style={{ width: "500px", height: "500px" }}
+          >
+            <AgoraVideoPlayer
+              style={{ height: "100%", width: "100%" }}
+              videoTrack={tracks[1]}
+            />
+          </div>
+        </>
       )}
-      {start && tracks && <Videos users={users} tracks={tracks} />}
-    </div>
+      {start && tracks && <Videos users={users} />}
+    </>
   );
 };
 

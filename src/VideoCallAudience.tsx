@@ -2,14 +2,13 @@ import { IAgoraRTCRemoteUser } from "agora-rtc-react";
 import React, { useState, useEffect, useContext } from "react";
 import { AgoraContext } from "./App";
 import ControlsChannel from "./ControlsChannel";
-import VideosAudience from "./VideosAudience";
+import Videos from "./Videos";
 
 const VideoCallAudience = (props: {
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
   channelName: string;
 }) => {
-  const { useClient, appId, token } =
-    useContext(AgoraContext);
+  const { useClient, appId, token } = useContext(AgoraContext);
 
   const { setInCall, channelName } = props;
   const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
@@ -17,7 +16,7 @@ const VideoCallAudience = (props: {
   // using the hook to get access to the client object
   const client = useClient();
   // ready is a state variable, which returns true when the local tracks are initialized, untill then tracks variable is null
-  
+
   useEffect(() => {
     // function to initialise the SDK
     let init = async (name: string) => {
@@ -63,14 +62,15 @@ const VideoCallAudience = (props: {
   }, [channelName, client]);
 
   return (
-    <div className="App">
+    <>
       {start && (
-        <div className="controls">
+        <>
+          <h2>My controls</h2>
           <ControlsChannel setStart={setStart} setInCall={setInCall} />
-        </div>
+        </>
       )}
-      {start && <VideosAudience users={users} />}
-    </div>
+      {start && <Videos users={users} />}
+    </>
   );
 };
 

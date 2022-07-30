@@ -23,12 +23,12 @@ export const ControlsTracks = (props: {
 
   return (
     <>
-      <p className={trackState.audio ? "on" : ""} onClick={() => mute("audio")}>
+      <button className={trackState.audio ? "on" : ""} onClick={() => mute("audio")}>
         {trackState.audio ? "MuteAudio" : "UnmuteAudio"}
-      </p>
-      <p className={trackState.video ? "on" : ""} onClick={() => mute("video")}>
+      </button>
+      <button className={trackState.video ? "on" : ""} onClick={() => mute("video")}>
         {trackState.video ? "MuteVideo" : "UnmuteVideo"}
-      </p>
+      </button>
     </>
   );
 };
