@@ -12,7 +12,7 @@ const Videos = (props: {
         {/* AgoraVideoPlayer component takes in the video track to render the stream,
               you can pass in other props that get passed to the rendered div */}
         <AgoraVideoPlayer
-          style={{ height: "95%", width: "95%" }}
+          style={{ height: "30%", width: "30%" }}
           className="vid"
           videoTrack={tracks[1]}
         />

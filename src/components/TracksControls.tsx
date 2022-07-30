@@ -1,7 +1,5 @@
 import { IMicrophoneAudioTrack, ICameraVideoTrack } from "agora-rtc-sdk-ng";
 import { useContext, useState } from "react";
-import { AgoraClientContext } from "./AgoraClientProvider";
-import { AgoraConfigContext } from "./AgoraConfigProvider";
 
 export const TracksControls = (props: {
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];

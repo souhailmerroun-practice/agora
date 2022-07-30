@@ -3,19 +3,13 @@ import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
-import { AgoraClientProvider } from "./components/AgoraClientProvider";
-import { AgoraConfigProvider } from "./components/AgoraConfigProvider";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
   <React.StrictMode>
-    <AgoraConfigProvider>
-      <AgoraClientProvider>
-        <App />
-      </AgoraClientProvider>
-    </AgoraConfigProvider>
+    <App />
   </React.StrictMode>
 );
 

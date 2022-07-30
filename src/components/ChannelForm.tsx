@@ -1,12 +1,14 @@
 import { useContext } from "react";
-import { AgoraConfigContext } from "./AgoraConfigProvider";
+import { AgoraContext } from "../App";
 
 const ChannelForm = (props: {
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
   setRole: React.Dispatch<React.SetStateAction<string>>;
+  setChannelName: React.Dispatch<React.SetStateAction<string>>;
 }) => {
-  const { appId } = useContext(AgoraConfigContext);
-  const { setInCall, setRole } = props;
+  const { useClient, useMicrophoneAndCameraTracks, appId, token } =
+    useContext(AgoraContext);
+  const { setInCall, setRole, setChannelName } = props;
 
   return (
     <form className="join">
@@ -18,7 +20,7 @@ const ChannelForm = (props: {
       <input
         type="text"
         placeholder="Enter Channel Name"
-        //onChange={(e) => setChannelName(e.target.value)}
+        onChange={(e) => setChannelName(e.target.value)}
       />
       <button
         onClick={(e) => {

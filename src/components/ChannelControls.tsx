@@ -1,13 +1,16 @@
 import { IMicrophoneAudioTrack, ICameraVideoTrack } from "agora-rtc-sdk-ng";
 import { useContext, useState } from "react";
-import { AgoraClientContext } from "./AgoraClientProvider";
-import { AgoraConfigContext } from "./AgoraConfigProvider";
+import { AgoraContext } from "../App";
 
 export const ChannelControls = (props: {
   setStart: React.Dispatch<React.SetStateAction<boolean>>;
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { client } = useContext(AgoraClientContext);
+  const { useClient, useMicrophoneAndCameraTracks, appId, token } =
+    useContext(AgoraContext);
+
+  // using the hook to get access to the client object
+  const client = useClient();
 
   const { setStart, setInCall } = props;
 
