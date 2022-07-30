@@ -2,13 +2,13 @@ import React, { useContext } from "react";
 import { AgoraContext } from "./App";
 
 const ChannelForm = (props: {
-  setInCall: React.Dispatch<React.SetStateAction<boolean>>;
   setChannelName: React.Dispatch<React.SetStateAction<string>>;
-  setRole: React.Dispatch<React.SetStateAction<string>>;
+  handleClickJoinAudience: any
+  handleClickJoinHost: any
 }) => {
   const { appId } = useContext(AgoraContext);
 
-  const { setInCall, setChannelName, setRole } = props;
+  const { setChannelName, handleClickJoinAudience, handleClickJoinHost } = props;
 
   return (
     <form className="join">
@@ -23,20 +23,12 @@ const ChannelForm = (props: {
         onChange={(e) => setChannelName(e.target.value)}
       />
       <button
-        onClick={(e) => {
-          e.preventDefault();
-          setInCall(true);
-          setRole("host");
-        }}
+        onClick={handleClickJoinHost}
       >
         Join
       </button>
       <button
-        onClick={(e) => {
-          e.preventDefault();
-          setInCall(true);
-          setRole("audience");
-        }}
+        onClick={handleClickJoinAudience}
       >
         Join as audience
       </button>

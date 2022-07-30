@@ -6,21 +6,21 @@ const Videos = (props: { users: IAgoraRTCRemoteUser[] }) => {
 
   return (
     <>
-      <h2>Remote participants</h2>
+      <h2>Remote participants {users.length} </h2>
       {users.length > 0 &&
         users.map((user) => {
           if (user.videoTrack) {
             return (
               <div
+                key={user.uid}
                 style={{
                   width: "150px",
-                  height: "150px"
+                  height: "150px",
                 }}
               >
                 <AgoraVideoPlayer
                   style={{ height: "100%", width: "100%" }}
                   videoTrack={user.videoTrack}
-                  key={user.uid}
                 />
               </div>
             );
