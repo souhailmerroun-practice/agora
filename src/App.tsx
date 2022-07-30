@@ -22,12 +22,16 @@ const App = () => {
 
   useEffect(() => {
     let init = async () => {
+      const randomId = Math.random().toString(36).substring(2,7);
+
       const agoraRtm = new AgoraRtmClass(client, channel, {
         handleConnectionStateChanged,
         handleChannelMessage,
         handleMemberJoined
       });
-      await agoraRtm.login(Math.random().toString(36).substring(2,7));
+
+      await agoraRtm.login(randomId);
+      
       await agoraRtm.sendMessage("hi");
       //await agoraRtm.logout();
     };
