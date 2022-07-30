@@ -1,12 +1,20 @@
 import { RtmChannel, RtmClient } from "agora-rtm-react";
 
+type Events = {
+  handleConnectionStateChanged: (state: any, reason: any) => void
+  handleChannelMessage: (msg: any, uid: any) => void
+  handleMemberJoined: (memberId: any) => void
+}
+
 export class AgoraRtmClass {
   client: RtmClient;
   channel: RtmChannel;
+  events: Events;
 
-  constructor(client: RtmClient, channel: RtmChannel) {
+  constructor(client: RtmClient, channel: RtmChannel, events: Events) {
     this.client = client;
     this.channel = channel;
+    this.events = events;
   }
 
   async login(uid: string) {
@@ -14,17 +22,11 @@ export class AgoraRtmClass {
 
     await this.channel.join();
 
-    this.client.on("ConnectionStateChanged", async (state, reason) => {
-      console.log("ConnectionStateChanged", state, reason);
-    });
+    this.client.on("ConnectionStateChanged", this.events.handleConnectionStateChanged);
 
-    this.channel.on("ChannelMessage", (msg, uid) => {
-      console.log({ msg, uid });
-    });
+    this.channel.on("ChannelMessage", this.events.handleChannelMessage);
 
-    this.channel.on("MemberJoined", (memberId) => {
-      console.log("New Member: ", memberId);
-    });
+    this.channel.on("MemberJoined", this.events.handleMemberJoined);
   }
 
   async logout() {
