@@ -1,13 +1,13 @@
 import { AgoraVideoPlayer } from "agora-rtc-react";
 import React, { useEffect, useContext } from "react";
-import { AgoraContext } from "./App";
+import { AgoraRtcContext } from "./Agora/Rtc/AgoraRtcContext";
 import ControlsChannel from "./ControlsChannel";
 import ControlsTracks from "./ControlsTracks";
 
 const VideoCall = (props: {
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { useClient, useMicrophoneAndCameraTracks } = useContext(AgoraContext);
+  const { useClient, useMicrophoneAndCameraTracks } = useContext(AgoraRtcContext);
 
   const { setInCall } = props;
   const client = useClient();

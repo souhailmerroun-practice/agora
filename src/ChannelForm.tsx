@@ -1,12 +1,12 @@
 import React, { useContext } from "react";
-import { AgoraContext } from "./App";
+import { AgoraRtcContext } from "./Agora/Rtc/AgoraRtcContext";
 
 const ChannelForm = (props: {
   setChannelName: React.Dispatch<React.SetStateAction<string>>;
   handleClickJoinAudience: any
   handleClickJoinHost: any
 }) => {
-  const { appId } = useContext(AgoraContext);
+  const { appId } = useContext(AgoraRtcContext);
 
   const { setChannelName, handleClickJoinAudience, handleClickJoinHost } = props;
 

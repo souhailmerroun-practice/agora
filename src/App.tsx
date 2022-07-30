@@ -1,36 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
-  createClient,
-  createMicrophoneAndCameraTracks,
-  ClientConfig,
   IAgoraRTCRemoteUser,
 } from "agora-rtc-react";
 import VideoCall from "./VideoCall";
 import ChannelForm from "./ChannelForm";
 import VideoCallAudience from "./VideoCallAudience";
 import Videos from "./Videos";
-
-const config: ClientConfig = {
-  mode: "live",
-  codec: "vp8",
-};
-
-const appId: string = "c7f382d8d1264ab997f69189dac8eb91"; 
-const token: string | null = null;
-
-const useClient = createClient(config);
-const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
-
-export const AgoraContext = React.createContext({
-  appId: appId,
-  token: token,
-  useClient: useClient,
-  useMicrophoneAndCameraTracks: useMicrophoneAndCameraTracks,
-});
+import { AgoraRtcContext, appId, token } from "./Agora/Rtc/AgoraRtcContext";
 
 const App = () => {
+  const { useClient } = useContext(AgoraRtcContext);
+
   const client = useClient();
-  
+
   const [inCall, setInCall] = useState(false);
   const [channelName, setChannelName] = useState("");
   const [role, setRole] = useState("");
@@ -93,33 +75,24 @@ const App = () => {
   };
 
   return (
-    <AgoraContext.Provider
-      value={{
-        appId: appId,
-        token: token,
-        useClient: useClient,
-        useMicrophoneAndCameraTracks: useMicrophoneAndCameraTracks,
-      }}
-    >
-      <>
-        <h1>Agora RTC NG SDK React Wrapper</h1>
-        {inCall && role === "host" && <VideoCall setInCall={setInCall} />}
+    <>
+      <h1>Agora RTC NG SDK React Wrapper</h1>
+      {inCall && role === "host" && <VideoCall setInCall={setInCall} />}
 
-        {inCall && role === "audience" && (
-          <VideoCallAudience setInCall={setInCall} />
-        )}
+      {inCall && role === "audience" && (
+        <VideoCallAudience setInCall={setInCall} />
+      )}
 
-        {inCall && <Videos users={users} />}
+      {inCall && <Videos users={users} />}
 
-        {!inCall && (
-          <ChannelForm
-            setChannelName={setChannelName}
-            handleClickJoinHost={handleClickJoinHost}
-            handleClickJoinAudience={handleClickJoinAudience}
-          />
-        )}
-      </>
-    </AgoraContext.Provider>
+      {!inCall && (
+        <ChannelForm
+          setChannelName={setChannelName}
+          handleClickJoinHost={handleClickJoinHost}
+          handleClickJoinAudience={handleClickJoinAudience}
+        />
+      )}
+    </>
   );
 };
 
