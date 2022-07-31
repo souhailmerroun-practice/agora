@@ -1,22 +1,14 @@
-import React, { useContext } from "react";
-import { AgoraRtcContext } from "./Agora/Rtc/AgoraRtcContext";
+import React from "react";
 
 const ChannelForm = (props: {
   setChannelName: React.Dispatch<React.SetStateAction<string>>;
   handleClickJoinAudience: any
   handleClickJoinHost: any
 }) => {
-  const { appId } = useContext(AgoraRtcContext);
-
   const { setChannelName, handleClickJoinAudience, handleClickJoinHost } = props;
 
   return (
     <form className="join">
-      {appId === "" && (
-        <p style={{ color: "red" }}>
-          Please enter your Agora App ID in App.tsx and refresh the page
-        </p>
-      )}
       <input
         type="text"
         placeholder="Enter Channel Name"

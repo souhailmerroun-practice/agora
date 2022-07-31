@@ -1,15 +1,16 @@
 import { IMicrophoneAudioTrack, ICameraVideoTrack } from "agora-rtc-react";
 import React, { useContext } from "react";
 import { AgoraRtcContext } from "./Agora/Rtc/AgoraRtcContext";
+import { AgoraRtmContext } from "./Agora/Rtm/AgoraRtmContext";
 
 export const ControlsChannel = (props: {
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
   tracks?: [IMicrophoneAudioTrack, ICameraVideoTrack];
 }) => {
-  const { useClient } = useContext(AgoraRtcContext);
+  const { agoraRtcClassInstance } = useContext(AgoraRtcContext);
+  const { agoraRtmClassInstance } = useContext(AgoraRtmContext);
 
   const { setInCall, tracks } = props;
-  const client = useClient();
 
   const leaveChannel = async () => {
     if (tracks) {
@@ -17,8 +18,8 @@ export const ControlsChannel = (props: {
       tracks[1].close();
     }
 
-    await client.leave();
-    client.removeAllListeners();
+    await agoraRtcClassInstance.leave();
+    await agoraRtmClassInstance.logout();
     setInCall(false);
   };
 

@@ -7,23 +7,22 @@ import ControlsTracks from "./ControlsTracks";
 const VideoCall = (props: {
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { useClient, useMicrophoneAndCameraTracks } = useContext(AgoraRtcContext);
+  const { agoraRtcClassInstance } = useContext(AgoraRtcContext);
 
   const { setInCall } = props;
-  const client = useClient();
-  const { ready, tracks } = useMicrophoneAndCameraTracks();
+  const { ready, tracks } = agoraRtcClassInstance.useMicrophoneAndCameraTracks();
 
   useEffect(() => {
     console.log('this is triggered now')
     let init = async () => {
-      if (ready && tracks) await client.publish([tracks[0], tracks[1]]);
+      if(ready && tracks) await agoraRtcClassInstance.publish([tracks[0], tracks[1]]);
     };
 
     if (ready && tracks) {
       console.log("init ready");
       init();
     }
-  }, [client, ready, tracks]);
+  }, [agoraRtcClassInstance.client, ready, tracks]);
 
   return (
     <>
