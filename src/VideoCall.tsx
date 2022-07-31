@@ -25,40 +25,46 @@ const VideoCall = (props: {
   // ready is a state variable, which returns true when the local tracks are initialized, untill then tracks variable is null
   const { ready, tracks } = useMicrophoneAndCameraTracks();
 
+  const handleUserPublished = async (user, mediaType) => {
+    await client.subscribe(user, mediaType);
+    console.log("subscribe success");
+    if (mediaType === "video") {
+      setUsers((prevUsers) => {
+        return [...prevUsers, user];
+      });
+    }
+    if (mediaType === "audio") {
+      user.audioTrack?.play();
+    }
+  }
+
+  const handleUserUnpublished = (user, type) => {
+    console.log("unpublished", user, type);
+    if (type === "audio") {
+      user.audioTrack?.stop();
+    }
+    if (type === "video") {
+      setUsers((prevUsers) => {
+        return prevUsers.filter((User) => User.uid !== user.uid);
+      });
+    }
+  }
+
+  const handleUserLeft = (user) => {
+    console.log("leaving", user);
+    setUsers((prevUsers) => {
+      return prevUsers.filter((User) => User.uid !== user.uid);
+    });
+  }
+
   useEffect(() => {
     // function to initialise the SDK
     let init = async (name: string) => {
-      client.on("user-published", async (user, mediaType) => {
-        await client.subscribe(user, mediaType);
-        console.log("subscribe success");
-        if (mediaType === "video") {
-          setUsers((prevUsers) => {
-            return [...prevUsers, user];
-          });
-        }
-        if (mediaType === "audio") {
-          user.audioTrack?.play();
-        }
-      });
+      client.on("user-published", handleUserPublished);
 
-      client.on("user-unpublished", (user, type) => {
-        console.log("unpublished", user, type);
-        if (type === "audio") {
-          user.audioTrack?.stop();
-        }
-        if (type === "video") {
-          setUsers((prevUsers) => {
-            return prevUsers.filter((User) => User.uid !== user.uid);
-          });
-        }
-      });
+      client.on("user-unpublished", handleUserUnpublished);
 
-      client.on("user-left", (user) => {
-        console.log("leaving", user);
-        setUsers((prevUsers) => {
-          return prevUsers.filter((User) => User.uid !== user.uid);
-        });
-      });
+      client.on("user-left", handleUserLeft);
 
       await client.join(appId, name, token, null);
       if (tracks) await client.publish([tracks[0], tracks[1]]);
