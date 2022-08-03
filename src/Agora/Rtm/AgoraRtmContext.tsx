@@ -11,7 +11,7 @@ export const useChannel = createChannel("test");
 const client = useClient();
 const channel = useChannel(client);
 
-const agoraRtmClassInstance = new AgoraRtmClass(client, channel);
+export const agoraRtmClassInstance = new AgoraRtmClass(client, channel);
 
 type AgoraRtmContextInterface = {
   agoraRtmClassInstance: AgoraRtmClass

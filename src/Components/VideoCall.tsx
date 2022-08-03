@@ -1,6 +1,6 @@
 import { AgoraVideoPlayer } from "agora-rtc-react";
 import React, { useEffect, useContext } from "react";
-import { AgoraRtcContext } from "./Agora/Rtc/AgoraRtcContext";
+import { AgoraRtcContext } from "../Agora/Rtc/AgoraRtcContext";
 import ControlsChannel from "./ControlsChannel";
 import ControlsTracks from "./ControlsTracks";
 

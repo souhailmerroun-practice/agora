@@ -1,40 +1,57 @@
 import { RtmChannel, RtmClient } from "agora-rtm-react";
 
-type Events = {
-  handleConnectionStateChanged: (state: any, reason: any) => void
-  handleChannelMessage: (msg: any, uid: any) => void
-  handleMemberJoined: (memberId: any) => void
-  handleMemberCountUpdated: (memberCount: number) => void
-}
-
 export class AgoraRtmClass {
   client: RtmClient;
   channel: RtmChannel;
-  events?: Events;
 
   constructor(client: RtmClient, channel: RtmChannel) {
     this.client = client;
     this.channel = channel;
   }
 
-  async getMembers () {
-    return await this.channel.getMembers();
+  /**
+   * events
+   */
+  handleConnectionStateChanged(state: any, reason: any) {
+    console.log("ConnectionStateChanged", state, reason);
   }
 
-  async login(uid: string, events: Events) {
-    this.events = events;
+  handleChannelMessage(msg: any, uid: any) {
+    console.log({ msg, uid });
+  }
+
+  handleMemberJoined(memberId: any) {
+    console.log("New Member: ", memberId);
+  }
+
+  handleMemberCountUpdated(
+    memberCount: number,
+    setMembersCount: React.Dispatch<React.SetStateAction<number>>
+  ) {
+    setMembersCount(memberCount);
+  }
+
+  /**
+   * methods
+   */
+
+  async login(
+    uid: string,
+    setMembersCount: React.Dispatch<React.SetStateAction<number>>
+  ) {
+    this.client.on("ConnectionStateChanged", this.handleConnectionStateChanged);
+
+    this.channel.on("ChannelMessage", this.handleChannelMessage);
+
+    this.channel.on("MemberJoined", this.handleMemberJoined);
+
+    this.channel.on("MemberCountUpdated", (memberCount) =>
+      this.handleMemberCountUpdated(memberCount, setMembersCount)
+    );
 
     await this.client.login({ uid });
 
     await this.channel.join();
-
-    this.client.on("ConnectionStateChanged", this.events.handleConnectionStateChanged);
-
-    this.channel.on("ChannelMessage", this.events.handleChannelMessage);
-
-    this.channel.on("MemberJoined", this.events.handleMemberJoined);
-
-    this.channel.on("MemberCountUpdated", this.events.handleMemberCountUpdated);
   }
 
   async logout() {
@@ -47,5 +64,9 @@ export class AgoraRtmClass {
   async sendMessage(text: string) {
     let message = this.client.createMessage({ text, messageType: "TEXT" });
     await this.channel.sendMessage(message);
+  }
+
+  async getMembers() {
+    return await this.channel.getMembers();
   }
 }

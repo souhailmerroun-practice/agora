@@ -1,7 +1,7 @@
 import { IMicrophoneAudioTrack, ICameraVideoTrack } from "agora-rtc-react";
 import React, { useContext } from "react";
-import { AgoraRtcContext } from "./Agora/Rtc/AgoraRtcContext";
-import { AgoraRtmContext } from "./Agora/Rtm/AgoraRtmContext";
+import { AgoraRtcContext } from "../Agora/Rtc/AgoraRtcContext";
+import { AgoraRtmContext } from "../Agora/Rtm/AgoraRtmContext";
 
 export const ControlsChannel = (props: {
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;

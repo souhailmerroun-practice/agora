@@ -23,7 +23,7 @@ export const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
 
 const client = useClient();
 
-const agoraRtcClassInstance = new AgoraRtmClass(appId, token, client, useMicrophoneAndCameraTracks);
+export const agoraRtcClassInstance = new AgoraRtmClass(appId, token, client, useMicrophoneAndCameraTracks);
 
 type AgoraRtcContextInterface = {
   /*appId: string;
