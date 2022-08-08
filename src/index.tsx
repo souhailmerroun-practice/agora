@@ -22,8 +22,9 @@ ReactDOM.render(
       value={{
         agoraRtcClassInstance: agoraRtcClassInstance,
       }}
-    ></AgoraRtcContext.Provider>
-    <App channelName="test" clientRole="audience" />
+    >
+      <App channelName="test" clientRole="host" />
+    </AgoraRtcContext.Provider>
   </AgoraRtmContext.Provider>,
   document.getElementById("root")
 );

@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 import { ClientRole, IAgoraRTCRemoteUser } from "agora-rtc-react";
 import { AgoraRtcContext } from "./Agora/Rtc/AgoraRtcContext";
 import { AgoraRtmContext } from "./Agora/Rtm/AgoraRtmContext";
-import ChannelForm from "./Components/ChannelForm";
 import VideoCall from "./Components/VideoCall";
 import VideoCallAudience from "./Components/VideoCallAudience";
 import Videos from "./Components/Videos";
