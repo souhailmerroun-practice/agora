@@ -4,17 +4,24 @@ import {
   IAgoraRTCClient,
   IAgoraRTCRemoteUser,
   ICameraVideoTrack,
+  ILocalAudioTrack,
   ILocalTrack,
+  ILocalVideoTrack,
   IMicrophoneAudioTrack,
 } from "agora-rtc-react";
 
-export class AgoraRtmClass {
+export class AgoraRtcClass {
   appId: string;
   token: string | null;
   client: IAgoraRTCClient;
   useMicrophoneAndCameraTracks: () => {
     ready: boolean;
     tracks: [IMicrophoneAudioTrack, ICameraVideoTrack] | null;
+    error: AgoraRTCError | null;
+  };
+  useCreateScreenVideoTrack: () => {
+    ready: boolean;
+    tracks: ILocalVideoTrack | [ILocalVideoTrack, ILocalAudioTrack];
     error: AgoraRTCError | null;
   };
   clientRole?: ClientRole;
@@ -28,12 +35,18 @@ export class AgoraRtmClass {
       ready: boolean;
       tracks: [IMicrophoneAudioTrack, ICameraVideoTrack] | null;
       error: AgoraRTCError | null;
+    },
+    useCreateScreenVideoTrack: () => {
+      ready: boolean;
+      tracks: ILocalVideoTrack | [ILocalVideoTrack, ILocalAudioTrack];
+      error: AgoraRTCError | null;
     }
   ) {
     this.client = client;
     this.appId = appId;
     this.token = token;
     this.useMicrophoneAndCameraTracks = useMicrophoneAndCameraTracks;
+    this.useCreateScreenVideoTrack = useCreateScreenVideoTrack;
   }
 
   /**
@@ -103,7 +116,17 @@ export class AgoraRtmClass {
   }
 
   async publish(tracks: ILocalTrack | ILocalTrack[]) {
-    await this.client.publish([tracks[0], tracks[1]]);
+    if(Array.isArray(tracks)) {
+      await this.client.publish([tracks[0], tracks[1]]);
+    } else {
+      await this.client.publish(tracks);
+    }
+  }
+
+  async unpublish(tracks: ILocalTrack | ILocalTrack[]) {
+    if(Array.isArray(tracks)) {
+      await this.client.publish([tracks[0], tracks[1]]);
+    }
   }
 
   async leave() {

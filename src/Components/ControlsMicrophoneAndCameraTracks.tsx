@@ -1,7 +1,7 @@
 import { IMicrophoneAudioTrack, ICameraVideoTrack } from "agora-rtc-react";
 import React, { useState } from "react";
 
-export const ControlsTracks = (props: {
+export const ControlsMicrophoneAndCameraTracks = (props: {
   tracks: [IMicrophoneAudioTrack, ICameraVideoTrack];
 }) => {
   const { tracks } = props;
@@ -33,4 +33,4 @@ export const ControlsTracks = (props: {
   );
 };
 
-export default ControlsTracks;
+export default ControlsMicrophoneAndCameraTracks;

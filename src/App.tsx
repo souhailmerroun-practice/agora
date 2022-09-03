@@ -47,6 +47,8 @@ const App = ({ channelName, clientRole }: Props) => {
     setInCall(true);
   };
 
+  console.log({users});
+
   return (
     <>
       <p>In the channel {membersCount}</p>
