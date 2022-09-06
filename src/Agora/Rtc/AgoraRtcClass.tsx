@@ -10,20 +10,23 @@ import {
   IMicrophoneAudioTrack,
 } from "agora-rtc-react";
 
-export class AgoraRtcClass {
-  appId: string;
-  token: string | null;
-  client: IAgoraRTCClient;
+type Tracks = {
   useMicrophoneAndCameraTracks: () => {
     ready: boolean;
     tracks: [IMicrophoneAudioTrack, ICameraVideoTrack] | null;
     error: AgoraRTCError | null;
-  };
-  useCreateScreenVideoTrack: () => {
+  },
+  useScreenVideoTrack: () => {
     ready: boolean;
     tracks: ILocalVideoTrack | [ILocalVideoTrack, ILocalAudioTrack];
     error: AgoraRTCError | null;
-  };
+  }
+}
+export class AgoraRtcClass {
+  appId: string;
+  token: string | null;
+  client: IAgoraRTCClient;
+  tracks: Tracks;
   clientRole?: ClientRole;
   users?: IAgoraRTCRemoteUser[];
 
@@ -31,36 +34,33 @@ export class AgoraRtcClass {
     appId: string,
     token: string | null,
     client: IAgoraRTCClient,
-    useMicrophoneAndCameraTracks: () => {
-      ready: boolean;
-      tracks: [IMicrophoneAudioTrack, ICameraVideoTrack] | null;
-      error: AgoraRTCError | null;
-    },
-    useCreateScreenVideoTrack: () => {
-      ready: boolean;
-      tracks: ILocalVideoTrack | [ILocalVideoTrack, ILocalAudioTrack];
-      error: AgoraRTCError | null;
-    }
+    tracks: Tracks
   ) {
     this.client = client;
     this.appId = appId;
     this.token = token;
-    this.useMicrophoneAndCameraTracks = useMicrophoneAndCameraTracks;
-    this.useCreateScreenVideoTrack = useCreateScreenVideoTrack;
+    this.tracks = tracks;
   }
-
+  
   /**
    * events
    */
 
-  handleUserLeft(user, setUsers: React.Dispatch<React.SetStateAction<IAgoraRTCRemoteUser[]>>) {
+  handleUserLeft(
+    user,
+    setUsers: React.Dispatch<React.SetStateAction<IAgoraRTCRemoteUser[]>>
+  ) {
     console.log("leaving", user);
     setUsers((prevUsers) => {
       return prevUsers.filter((User) => User.uid !== user.uid);
     });
   }
 
-  handleUserUnpublished(user, type, setUsers: React.Dispatch<React.SetStateAction<IAgoraRTCRemoteUser[]>>) {
+  handleUserUnpublished(
+    user,
+    type,
+    setUsers: React.Dispatch<React.SetStateAction<IAgoraRTCRemoteUser[]>>
+  ) {
     console.log("unpublished", user, type);
     if (type === "audio") {
       user.audioTrack?.stop();
@@ -72,7 +72,11 @@ export class AgoraRtcClass {
     }
   }
 
-  async handleUserPublished(user, mediaType, setUsers: React.Dispatch<React.SetStateAction<IAgoraRTCRemoteUser[]>>) {
+  async handleUserPublished(
+    user,
+    mediaType,
+    setUsers: React.Dispatch<React.SetStateAction<IAgoraRTCRemoteUser[]>>
+  ) {
     console.log({ user });
     await this.subscribe(user, mediaType);
     console.log("subscribe success");
@@ -89,22 +93,35 @@ export class AgoraRtcClass {
   /**
    * methods
    */
-  async joinAsHost(channelName: string, setUsers: React.Dispatch<React.SetStateAction<IAgoraRTCRemoteUser[]>>) {
+  async joinAsHost(
+    channelName: string,
+    setUsers: React.Dispatch<React.SetStateAction<IAgoraRTCRemoteUser[]>>
+  ) {
     this.client.setClientRole("host");
     this.clientRole = "host";
     return this.join(channelName, setUsers);
   }
 
-  async joinAsAudience(channelName: string, setUsers: React.Dispatch<React.SetStateAction<IAgoraRTCRemoteUser[]>>) {
+  async joinAsAudience(
+    channelName: string,
+    setUsers: React.Dispatch<React.SetStateAction<IAgoraRTCRemoteUser[]>>
+  ) {
     this.client.setClientRole("audience");
     this.clientRole = "audience";
     return this.join(channelName, setUsers);
   }
 
-  async join(channelName: string, setUsers:  React.Dispatch<React.SetStateAction<IAgoraRTCRemoteUser[]>>) {
-    this.client.on("user-published", (user, mediaType) => this.handleUserPublished(user, mediaType, setUsers));
+  async join(
+    channelName: string,
+    setUsers: React.Dispatch<React.SetStateAction<IAgoraRTCRemoteUser[]>>
+  ) {
+    this.client.on("user-published", (user, mediaType) =>
+      this.handleUserPublished(user, mediaType, setUsers)
+    );
 
-    this.client.on("user-unpublished", (user, mediaType) => this.handleUserUnpublished(user, mediaType, setUsers));
+    this.client.on("user-unpublished", (user, mediaType) =>
+      this.handleUserUnpublished(user, mediaType, setUsers)
+    );
 
     this.client.on("user-left", (user) => this.handleUserLeft(user, setUsers));
 
@@ -116,7 +133,7 @@ export class AgoraRtcClass {
   }
 
   async publish(tracks: ILocalTrack | ILocalTrack[]) {
-    if(Array.isArray(tracks)) {
+    if (Array.isArray(tracks)) {
       await this.client.publish([tracks[0], tracks[1]]);
     } else {
       await this.client.publish(tracks);
@@ -124,9 +141,11 @@ export class AgoraRtcClass {
   }
 
   async unpublish(tracks: ILocalTrack | ILocalTrack[]) {
-    if(Array.isArray(tracks)) {
-      await this.client.publish([tracks[0], tracks[1]]);
+    if (Array.isArray(tracks)) {
+      await this.client.unpublish([tracks[0], tracks[1]]);
     }
+
+    await this.client.unpublish(tracks);
   }
 
   async leave() {

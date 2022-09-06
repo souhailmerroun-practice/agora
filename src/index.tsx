@@ -8,7 +8,8 @@ import {
   AgoraRtmContext,
 } from "./Agora/Rtm/AgoraRtmContext";
 import {
-  agoraRtcClassInstance,
+  agoraRtcClassInstanceMicrophoneAndCamera,
+  agoraRtcClassInstanceScreenVideo,
   AgoraRtcContext,
 } from "./Agora/Rtc/AgoraRtcContext";
 
@@ -20,7 +21,9 @@ ReactDOM.render(
   >
     <AgoraRtcContext.Provider
       value={{
-        agoraRtcClassInstance: agoraRtcClassInstance,
+        agoraRtcClassInstanceMicrophoneAndCamera:
+          agoraRtcClassInstanceMicrophoneAndCamera,
+        agoraRtcClassInstanceScreenVideo: agoraRtcClassInstanceScreenVideo,
       }}
     >
       <App channelName="test" clientRole="host" />

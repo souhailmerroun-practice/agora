@@ -1,12 +1,12 @@
 import { IAgoraRTCRemoteUser, AgoraVideoPlayer } from "agora-rtc-react";
 import React from "react";
 
-const Videos = (props: { users: IAgoraRTCRemoteUser[] }) => {
+const MicrophoneAndCameraRemoteUsers = (props: { users: IAgoraRTCRemoteUser[] }) => {
   const { users } = props;
 
   return (
     <>
-      <h2>Remote participants {users.length} </h2>
+      <h2>MicrophoneAndCameraRemoteUsers {users.length} </h2>
       {users.length > 0 &&
         users.map((user) => {
           if (user.videoTrack) {
@@ -30,4 +30,4 @@ const Videos = (props: { users: IAgoraRTCRemoteUser[] }) => {
   );
 };
 
-export default Videos;
+export default MicrophoneAndCameraRemoteUsers;

@@ -8,40 +8,44 @@ import {
 import React from "react";
 import { AgoraRtcClass } from "./AgoraRtcClass";
 
+// settings
+export const appId: string = "c7f382d8d1264ab997f69189dac8eb91";
+export const token: string | null = null;
 export const createClientConfig: ClientConfig = {
   mode: "live",
   codec: "vp8",
 };
-
 export const createScreenVideoTrackConfig: ScreenVideoTrackInitConfig = {}
 
-export const appId: string = "c7f382d8d1264ab997f69189dac8eb91";
-export const token: string | null = null;
+// clients
+export const useClientMicrophoneAndCamera = createClient(createClientConfig);
+export const useClientScreenVideo = createClient(createClientConfig);
 
-export const useClient = createClient(createClientConfig);
+// tracks
 export const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
-export const useCreateScreenVideoTrack = createScreenVideoTrack(createScreenVideoTrackConfig);
+export const useScreenVideoTrack = createScreenVideoTrack(createScreenVideoTrackConfig);
 
-const client = useClient();
+// settings 2 clients
+const clientMicrophoneAndCamera = useClientMicrophoneAndCamera();
+const clientScreenVideo = useClientScreenVideo();
 
-export const agoraRtcClassInstance = new AgoraRtcClass(appId, token, client, useMicrophoneAndCameraTracks, useCreateScreenVideoTrack);
+export const agoraRtcClassInstanceMicrophoneAndCamera = new AgoraRtcClass(appId, token, clientMicrophoneAndCamera, {
+  useMicrophoneAndCameraTracks,
+  useScreenVideoTrack
+});
 
+export const agoraRtcClassInstanceScreenVideo = new AgoraRtcClass(appId, token, clientScreenVideo, {
+  useMicrophoneAndCameraTracks,
+  useScreenVideoTrack
+});
+
+// setup
 type AgoraRtcContextInterface = {
-  /*appId: string;
-  token: string | null;
-  useClient: () => IAgoraRTCClient;
-  useMicrophoneAndCameraTracks: () => {
-    ready: boolean;
-    tracks: [IMicrophoneAudioTrack, ICameraVideoTrack] | null;
-    error: AgoraRTCError | null;
-  };*/
-  agoraRtcClassInstance: AgoraRtcClass
+  agoraRtcClassInstanceMicrophoneAndCamera: AgoraRtcClass,
+  agoraRtcClassInstanceScreenVideo: AgoraRtcClass
 };
 
 export const AgoraRtcContext = React.createContext<AgoraRtcContextInterface>({
-  /*appId: appId,
-  token: token,
-  useClient: useClient,
-  useMicrophoneAndCameraTracks: useMicrophoneAndCameraTracks,*/
-  agoraRtcClassInstance: agoraRtcClassInstance
+  agoraRtcClassInstanceMicrophoneAndCamera: agoraRtcClassInstanceMicrophoneAndCamera,
+  agoraRtcClassInstanceScreenVideo: agoraRtcClassInstanceScreenVideo
 });

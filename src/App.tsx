@@ -2,9 +2,13 @@ import React, { useContext, useState } from "react";
 import { ClientRole, IAgoraRTCRemoteUser } from "agora-rtc-react";
 import { AgoraRtcContext } from "./Agora/Rtc/AgoraRtcContext";
 import { AgoraRtmContext } from "./Agora/Rtm/AgoraRtmContext";
-import VideoCall from "./Components/VideoCall";
-import VideoCallAudience from "./Components/VideoCallAudience";
-import Videos from "./Components/Videos";
+import ButtonLeave from "./Components/ButtonLeave";
+import ButtonJoinHost from "./Components/ButtonJoinHost";
+import ButtonJoinAudience from "./Components/ButtonJoinAudience";
+import MicrophoneAndCameraRemoteUsers from "./Components/MicrophoneAndCameraRemoteUsers";
+import ScreenVideoRemoteUsers from "./Components/ScreenVideoRemoteUsers";
+import ButtonScreenVideo from "./Components/ButtonScreenVideo";
+import ButtonMicrophoneAndCamera from "./Components/ButtonMicrophoneAndCamera";
 
 type Props = {
   channelName: string;
@@ -12,10 +16,18 @@ type Props = {
 };
 
 const App = ({ channelName, clientRole }: Props) => {
-  const { agoraRtcClassInstance } = useContext(AgoraRtcContext);
+  const {
+    agoraRtcClassInstanceMicrophoneAndCamera,
+    agoraRtcClassInstanceScreenVideo,
+  } = useContext(AgoraRtcContext);
   const { agoraRtmClassInstance } = useContext(AgoraRtmContext);
 
-  const [users, setUsers] = useState<IAgoraRTCRemoteUser[]>([]);
+  const [
+    agoraRtcMicrophoneAndCameraRemoteUsers,
+    setAgoraRtcMicrophoneAndCameraRemoteUsers,
+  ] = useState<IAgoraRTCRemoteUser[]>([]);
+  const [agoraRtcScreenVideoRemoteUsers, setAgoraRtcScreenVideoRemoteUsers] =
+    useState<IAgoraRTCRemoteUser[]>([]);
   const [membersCount, setMembersCount] = useState<number>(0);
 
   const [inCall, setInCall] = useState(false);
@@ -24,52 +36,65 @@ const App = ({ channelName, clientRole }: Props) => {
    * User events
    */
 
-  const handleClickJoinHost = async (e) => {
-    e.preventDefault();
-    await agoraRtmClassInstance.login(
-      Math.random().toString(36).substring(2, 7),
-      setMembersCount
+  if (inCall === false) {
+    return (
+      <>
+        {clientRole === "host" && (
+          <ButtonJoinHost
+            channelNameMicrophoneAndCamera={
+              channelName + "-microphoneAndCamera"
+            }
+            channelNameScreenVideo={channelName + "screenVideo"}
+            setMembersCount={setMembersCount}
+            setAgoraRtcMicrophoneAndCameraRemoteUsers={
+              setAgoraRtcMicrophoneAndCameraRemoteUsers
+            }
+            setAgoraRtcScreenVideoRemoteUsers={
+              setAgoraRtcScreenVideoRemoteUsers
+            }
+            setInCall={setInCall}
+          />
+        )}
+
+        {clientRole === "audience" && (
+          <ButtonJoinAudience
+            channelNameMicrophoneAndCamera={
+              channelName + "-microphoneAndCamera"
+            }
+            channelNameScreenVideo={channelName + "screenVideo"}
+            setMembersCount={setMembersCount}
+            setAgoraRtcMicrophoneAndCameraRemoteUsers={
+              setAgoraRtcMicrophoneAndCameraRemoteUsers
+            }
+            setAgoraRtcScreenVideoRemoteUsers={
+              setAgoraRtcScreenVideoRemoteUsers
+            }
+            setInCall={setInCall}
+          />
+        )}
+      </>
     );
-    await agoraRtmClassInstance.sendMessage("HOST_JOINED");
-    await agoraRtcClassInstance.joinAsHost(channelName, setUsers);
-    setInCall(true);
-  };
+  }
 
-  const handleClickJoinAudience = async (e) => {
-    e.preventDefault();
-    await agoraRtmClassInstance.login(
-      Math.random().toString(36).substring(2, 7),
-      setMembersCount
-    );
-    await agoraRtmClassInstance.sendMessage("AUDIENCE_JOINED");
-
-    await agoraRtcClassInstance.joinAsAudience(channelName, setUsers);
-    setInCall(true);
-  };
-
-  console.log({users});
+  console.log({ agoraRtcMicrophoneAndCameraRemoteUsers });
+  console.log({ agoraRtcScreenVideoRemoteUsers });
 
   return (
     <>
       <p>In the channel {membersCount}</p>
+      <ButtonLeave setInCall={setInCall} />
 
-      {inCall && agoraRtcClassInstance.clientRole === "host" && (
-        <VideoCall setInCall={setInCall} />
+      {agoraRtcClassInstanceMicrophoneAndCamera.clientRole === "host" && (
+        <>
+          <ButtonMicrophoneAndCamera />
+          <ButtonScreenVideo />
+        </>
       )}
 
-      {inCall && agoraRtcClassInstance.clientRole === "audience" && (
-        <VideoCallAudience setInCall={setInCall} />
-      )}
-
-      {inCall && <Videos users={users} />}
-
-      {!inCall && clientRole === "host" && (
-        <button onClick={handleClickJoinHost}>Start the webinar (host)</button>
-      )}
-
-      {!inCall && clientRole === "audience" && (
-        <button onClick={handleClickJoinAudience}>Join the webinar (audience)</button>
-      )}
+      <MicrophoneAndCameraRemoteUsers
+        users={agoraRtcMicrophoneAndCameraRemoteUsers}
+      />
+      <ScreenVideoRemoteUsers users={agoraRtcScreenVideoRemoteUsers} />
     </>
   );
 };
