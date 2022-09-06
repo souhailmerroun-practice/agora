@@ -1,58 +1,15 @@
-import {
-  AgoraVideoPlayer,
-  ILocalAudioTrack,
-  ILocalVideoTrack,
-} from "agora-rtc-react";
-import React, { useContext, useEffect, useState } from "react";
-import {
-  agoraRtcClassInstanceMicrophoneAndCamera,
-  AgoraRtcContext,
-} from "../Agora/Rtc/AgoraRtcContext";
+import React from "react";
 
-export const ButtonScreenVideo = () => {
-  const { agoraRtcClassInstanceScreenVideo } = useContext(AgoraRtcContext);
+export const ButtonScreenVideo = (props: {
+  setScreenVideoEnabled: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
+  const { setScreenVideoEnabled } = props;
 
-  const [trackState, setTrackState] = useState(false);
+  const handleClickShareScreen = () => {
+    setScreenVideoEnabled(true);
+  };
 
-  const { ready, tracks } =
-    agoraRtcClassInstanceScreenVideo.tracks.useScreenVideoTrack();
-
-  useEffect(() => {
-    console.log("this is triggered now");
-    let init = async () => {
-      if (ready && tracks)
-        await agoraRtcClassInstanceScreenVideo.publish(tracks);
-    };
-
-    if (ready && tracks) {
-      console.log("init ready");
-      init();
-    }
-  }, [agoraRtcClassInstanceScreenVideo.client, ready, tracks]);
-
-
-  const handleStopScreenShare = async () => {
-    tracks.close();
-    await agoraRtcClassInstanceScreenVideo.unpublish(tracks);
-  }
-
-  if (tracks) {
-    return (
-      <>
-        <button className={trackState ? "on" : ""} onClick={handleStopScreenShare}>
-          Stop Screen Share
-        </button>
-        <div style={{ width: "250px", height: "250px" }}>
-          <AgoraVideoPlayer
-            style={{ height: "100%", width: "100%" }}
-            videoTrack={tracks}
-          />
-        </div>
-      </>
-    );
-  }
-
-  return <p>not ready</p>;
+  return <button onClick={handleClickShareScreen}>Share screen</button>;
 };
 
 export default ButtonScreenVideo;

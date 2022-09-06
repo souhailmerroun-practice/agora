@@ -2,20 +2,22 @@ import {
   IMicrophoneAudioTrack,
   ICameraVideoTrack,
   AgoraVideoPlayer,
+  createMicrophoneAndCameraTracks,
 } from "agora-rtc-react";
 import React, { useContext, useEffect, useState } from "react";
 import { AgoraRtcContext } from "../Agora/Rtc/AgoraRtcContext";
 
-export const ButtonMicrophoneAndCamera = (props: {}) => {
+const useMicrophoneAndCameraTracks = createMicrophoneAndCameraTracks();
+
+export const TracksMicrophoneAndCamera = (props: {}) => {
   const { agoraRtcClassInstanceMicrophoneAndCamera } =
     useContext(AgoraRtcContext);
-  const { ready, tracks } =
-    agoraRtcClassInstanceMicrophoneAndCamera.tracks.useMicrophoneAndCameraTracks();
+
+  const { ready, tracks } = useMicrophoneAndCameraTracks();
 
   const [trackState, setTrackState] = useState({ video: true, audio: true });
 
   useEffect(() => {
-    console.log("this is triggered now");
     let init = async () => {
       if (ready && tracks)
         await agoraRtcClassInstanceMicrophoneAndCamera.publish([
@@ -71,7 +73,7 @@ export const ButtonMicrophoneAndCamera = (props: {}) => {
     );
   }
 
-  return <p>Microphone and Camera not ready</p>;
+  return <p>Tracks Microphone and Camera not ready</p>;
 };
 
-export default ButtonMicrophoneAndCamera;
+export default TracksMicrophoneAndCamera;

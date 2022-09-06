@@ -47,9 +47,7 @@ export const ButtonJoinHost = (props: {
   };
 
   return (
-    <>
-      <button onClick={handleClickJoinHost}>Start the webinar (host)</button>
-    </>
+    <button onClick={handleClickJoinHost}>Start the webinar (host)</button>
   );
 };
 

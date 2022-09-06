@@ -5,7 +5,10 @@ import { AgoraRtmContext } from "../Agora/Rtm/AgoraRtmContext";
 export const ButtonLeave = (props: {
   setInCall: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const { agoraRtcClassInstanceMicrophoneAndCamera, agoraRtcClassInstanceScreenVideo } = useContext(AgoraRtcContext);
+  const {
+    agoraRtcClassInstanceMicrophoneAndCamera,
+    agoraRtcClassInstanceScreenVideo,
+  } = useContext(AgoraRtcContext);
   const { agoraRtmClassInstance } = useContext(AgoraRtmContext);
 
   const { setInCall } = props;
@@ -17,7 +20,7 @@ export const ButtonLeave = (props: {
     setInCall(false);
   };
 
-  return <>{<button onClick={leaveChannel}>Leave</button>}</>;
+  return <button onClick={leaveChannel}>Leave</button>;
 };
 
 export default ButtonLeave;

@@ -7,8 +7,9 @@ import ButtonJoinHost from "./Components/ButtonJoinHost";
 import ButtonJoinAudience from "./Components/ButtonJoinAudience";
 import MicrophoneAndCameraRemoteUsers from "./Components/MicrophoneAndCameraRemoteUsers";
 import ScreenVideoRemoteUsers from "./Components/ScreenVideoRemoteUsers";
+import TracksMicrophoneAndCamera from "./Components/TracksMicrophoneAndCamera";
 import ButtonScreenVideo from "./Components/ButtonScreenVideo";
-import ButtonMicrophoneAndCamera from "./Components/ButtonMicrophoneAndCamera";
+import TracksScreenVideo from "./Components/TracksScreenVideo";
 
 type Props = {
   channelName: string;
@@ -31,6 +32,7 @@ const App = ({ channelName, clientRole }: Props) => {
   const [membersCount, setMembersCount] = useState<number>(0);
 
   const [inCall, setInCall] = useState(false);
+  const [screenVideoEnabled, setScreenVideoEnabled] = useState(false);
 
   /**
    * User events
@@ -73,9 +75,15 @@ const App = ({ channelName, clientRole }: Props) => {
 
       {agoraRtcClassInstanceMicrophoneAndCamera.clientRole === "host" && (
         <>
-        <h2>Local tracks</h2>
-          <ButtonMicrophoneAndCamera />
-          <ButtonScreenVideo />
+          <h2>Local tracks</h2>
+          
+          <TracksMicrophoneAndCamera />
+
+          {screenVideoEnabled ? (
+            <TracksScreenVideo setScreenVideoEnabled={setScreenVideoEnabled} />
+          ) : (
+            <ButtonScreenVideo setScreenVideoEnabled={setScreenVideoEnabled} />
+          )}
         </>
       )}
 

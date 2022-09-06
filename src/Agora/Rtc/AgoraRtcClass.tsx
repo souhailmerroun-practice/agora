@@ -10,36 +10,21 @@ import {
   IMicrophoneAudioTrack,
 } from "agora-rtc-react";
 
-type Tracks = {
-  useMicrophoneAndCameraTracks: () => {
-    ready: boolean;
-    tracks: [IMicrophoneAudioTrack, ICameraVideoTrack] | null;
-    error: AgoraRTCError | null;
-  },
-  useScreenVideoTrack: () => {
-    ready: boolean;
-    tracks: ILocalVideoTrack | [ILocalVideoTrack, ILocalAudioTrack];
-    error: AgoraRTCError | null;
-  }
-}
 export class AgoraRtcClass {
   appId: string;
   token: string | null;
   client: IAgoraRTCClient;
-  tracks: Tracks;
   clientRole?: ClientRole;
   users?: IAgoraRTCRemoteUser[];
 
   constructor(
     appId: string,
     token: string | null,
-    client: IAgoraRTCClient,
-    tracks: Tracks
+    client: IAgoraRTCClient
   ) {
     this.client = client;
     this.appId = appId;
     this.token = token;
-    this.tracks = tracks;
   }
   
   /**
