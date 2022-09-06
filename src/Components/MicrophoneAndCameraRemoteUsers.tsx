@@ -6,7 +6,6 @@ const MicrophoneAndCameraRemoteUsers = (props: { users: IAgoraRTCRemoteUser[] })
 
   return (
     <>
-      <h2>MicrophoneAndCameraRemoteUsers {users.length} </h2>
       {users.length > 0 &&
         users.map((user) => {
           if (user.videoTrack) {

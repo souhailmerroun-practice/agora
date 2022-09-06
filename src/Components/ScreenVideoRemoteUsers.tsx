@@ -6,7 +6,6 @@ const ScreenVideoRemoteUsers = (props: { users: IAgoraRTCRemoteUser[] }) => {
 
   return (
     <>
-      <h2>ScreenVideoRemoteUsers {users.length} </h2>
       {users.length > 0 &&
         users.map((user) => {
           if (user.videoTrack) {

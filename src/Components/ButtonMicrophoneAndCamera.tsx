@@ -61,7 +61,6 @@ export const ButtonMicrophoneAndCamera = (props: {}) => {
         >
           {trackState.video ? "MuteVideo" : "UnmuteVideo"}
         </button>
-        <h2>Local track</h2>
         <div style={{ width: "250px", height: "250px" }}>
           <AgoraVideoPlayer
             style={{ height: "100%", width: "100%" }}

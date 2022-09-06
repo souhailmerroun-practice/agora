@@ -36,48 +36,35 @@ const App = ({ channelName, clientRole }: Props) => {
    * User events
    */
 
-  if (inCall === false) {
+  if (inCall === false && clientRole === "host") {
     return (
-      <>
-        {clientRole === "host" && (
-          <ButtonJoinHost
-            channelNameMicrophoneAndCamera={
-              channelName + "-microphoneAndCamera"
-            }
-            channelNameScreenVideo={channelName + "screenVideo"}
-            setMembersCount={setMembersCount}
-            setAgoraRtcMicrophoneAndCameraRemoteUsers={
-              setAgoraRtcMicrophoneAndCameraRemoteUsers
-            }
-            setAgoraRtcScreenVideoRemoteUsers={
-              setAgoraRtcScreenVideoRemoteUsers
-            }
-            setInCall={setInCall}
-          />
-        )}
-
-        {clientRole === "audience" && (
-          <ButtonJoinAudience
-            channelNameMicrophoneAndCamera={
-              channelName + "-microphoneAndCamera"
-            }
-            channelNameScreenVideo={channelName + "screenVideo"}
-            setMembersCount={setMembersCount}
-            setAgoraRtcMicrophoneAndCameraRemoteUsers={
-              setAgoraRtcMicrophoneAndCameraRemoteUsers
-            }
-            setAgoraRtcScreenVideoRemoteUsers={
-              setAgoraRtcScreenVideoRemoteUsers
-            }
-            setInCall={setInCall}
-          />
-        )}
-      </>
+      <ButtonJoinHost
+        channelNameMicrophoneAndCamera={channelName + "-microphoneAndCamera"}
+        channelNameScreenVideo={channelName + "screenVideo"}
+        setMembersCount={setMembersCount}
+        setAgoraRtcMicrophoneAndCameraRemoteUsers={
+          setAgoraRtcMicrophoneAndCameraRemoteUsers
+        }
+        setAgoraRtcScreenVideoRemoteUsers={setAgoraRtcScreenVideoRemoteUsers}
+        setInCall={setInCall}
+      />
     );
   }
 
-  console.log({ agoraRtcMicrophoneAndCameraRemoteUsers });
-  console.log({ agoraRtcScreenVideoRemoteUsers });
+  if (inCall === false && clientRole === "audience") {
+    return (
+      <ButtonJoinAudience
+        channelNameMicrophoneAndCamera={channelName + "-microphoneAndCamera"}
+        channelNameScreenVideo={channelName + "screenVideo"}
+        setMembersCount={setMembersCount}
+        setAgoraRtcMicrophoneAndCameraRemoteUsers={
+          setAgoraRtcMicrophoneAndCameraRemoteUsers
+        }
+        setAgoraRtcScreenVideoRemoteUsers={setAgoraRtcScreenVideoRemoteUsers}
+        setInCall={setInCall}
+      />
+    );
+  }
 
   return (
     <>
@@ -86,10 +73,13 @@ const App = ({ channelName, clientRole }: Props) => {
 
       {agoraRtcClassInstanceMicrophoneAndCamera.clientRole === "host" && (
         <>
+        <h2>Local tracks</h2>
           <ButtonMicrophoneAndCamera />
           <ButtonScreenVideo />
         </>
       )}
+
+      <h2>Remote tracks</h2>
 
       <MicrophoneAndCameraRemoteUsers
         users={agoraRtcMicrophoneAndCameraRemoteUsers}

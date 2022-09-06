@@ -26,7 +26,7 @@ ReactDOM.render(
         agoraRtcClassInstanceScreenVideo: agoraRtcClassInstanceScreenVideo,
       }}
     >
-      <App channelName="test" clientRole="host" />
+      <App channelName="test" clientRole="audience" />
     </AgoraRtcContext.Provider>
   </AgoraRtmContext.Provider>,
   document.getElementById("root")

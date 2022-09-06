@@ -39,7 +39,6 @@ export const ButtonScreenVideo = () => {
   if (tracks) {
     return (
       <>
-        <h2>Local track</h2>
         <button className={trackState ? "on" : ""} onClick={handleStopScreenShare}>
           Stop Screen Share
         </button>
